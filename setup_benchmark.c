@@ -37,6 +37,11 @@ static inline char base62(RNG *r) {
     for (;;) { unsigned char b = next_byte(r); if (b < 248) return ALPHABET[b % 62]; }
 }
 
+static inline char ws_char(RNG *r) {
+    static const char WS[] = " \n\r\t\v\f"; // 6 whitespace characters
+    for (;;) { unsigned char b = next_byte(r); if (b < 252) return WS[b % 6]; }
+}
+
 static int write_all(int fd, const char *data, size_t len) {
     size_t off = 0; while (off < len) { ssize_t w = write(fd, data + off, len - off);
         if (w < 0) { if (errno == EINTR) continue; return -1; } off += (size_t)w; }
@@ -62,12 +67,12 @@ int main(void) {
             size_t r = (size_t)(remaining - 1);
             if (pos + r + 1 > cap) { if (write_all(fd, buf, pos) < 0) { free(buf); close(fd); return 1; } pos = 0; }
             for (size_t i = 0; i < r; i++) buf[pos++] = base62(&rng);
-            buf[pos++] = ' '; remaining = 0;
+            buf[pos++] = ws_char(&rng); remaining = 0;
         } else {
             size_t r = word_len(&rng);
             if (pos + r + 1 > cap) { if (write_all(fd, buf, pos) < 0) { free(buf); close(fd); return 1; } pos = 0; }
             for (size_t i = 0; i < r; i++) buf[pos++] = base62(&rng);
-            buf[pos++] = ' '; remaining -= (uint64_t)(r + 1);
+            buf[pos++] = ws_char(&rng); remaining -= (uint64_t)(r + 1);
         }
 
         if (pos >= cap || remaining == 0) {

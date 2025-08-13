@@ -10,10 +10,10 @@ clang -Wall -Wextra -Wpedantic -O3 -funroll-loops -march=native -o ./bin/setup_b
 rm -f bench.txt
 ./bin/setup_benchmark
 
-# assert C versions match 65077011
-./bin/2_mvp bench.txt | grep -q 65077011 || echo "2_mvp failed" && exit 1
-./bin/3_simd bench.txt | grep -q 65077011 || echo "3_simd failed" && exit 1
-./bin/4_threads bench.txt | grep -q 65077011 || echo "4_threads failed" && exit 1
+# assert C versions match 65076996
+./bin/2_mvp bench.txt | grep -q 65076996 || echo "2_mvp failed" && exit 1
+./bin/3_simd bench.txt | grep -q 65076996 || echo "3_simd failed" && exit 1
+./bin/4_threads bench.txt | grep -q 65076996 || echo "4_threads failed" && exit 1
 
 # run benchmark
 hyperfine --warmup 2 --min-runs 3 \
