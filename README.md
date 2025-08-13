@@ -1,6 +1,5 @@
 # Counting Words at SIMD Speed
-> My blog post:
-> - [Counting Words at SIMD Speed](https://healeycodes.com/counting-words-at-simd-speed)
+> My blog post: [Counting Words at SIMD Speed](https://healeycodes.com/counting-words-at-simd-speed)
 <br>
 
 Whitespace-delimited word count implemented five ways.
