@@ -10,7 +10,7 @@ Results from my Apple M1 Pro:
 - Python + re: `13.7 s`
 - C (scalar loop): `1.205 s`
 - C + NEON: `249 ms`
-- C + NEON + threads: `181 ms` (5.97 GiB/s)
+- C + NEON + threads: `181 ms` (5.52 GiB/s)
 
 Includes a 1 GiB corpus generator and Hyperfine benchmarks.
 
