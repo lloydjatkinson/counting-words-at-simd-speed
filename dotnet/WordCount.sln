@@ -7,6 +7,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCount.VersionOne", "src
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCount.Cli", "src\WordCount.Cli\WordCount.Cli.csproj", "{C85DD421-CF72-4F8C-869E-F96DDB980A78}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8EC462FD-D22E-90A8-E5CE-7E832BA40C5D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WordCount.Benchmarks", "src\WordCount.Benchmarks\WordCount.Benchmarks.csproj", "{88B951CE-E8B0-6840-1415-A892590DE660}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +28,10 @@ Global
 		{C85DD421-CF72-4F8C-869E-F96DDB980A78}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C85DD421-CF72-4F8C-869E-F96DDB980A78}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C85DD421-CF72-4F8C-869E-F96DDB980A78}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88B951CE-E8B0-6840-1415-A892590DE660}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88B951CE-E8B0-6840-1415-A892590DE660}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88B951CE-E8B0-6840-1415-A892590DE660}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88B951CE-E8B0-6840-1415-A892590DE660}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
