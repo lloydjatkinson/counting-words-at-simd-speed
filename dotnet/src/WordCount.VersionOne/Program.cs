@@ -1,17 +1,20 @@
-﻿using WordCount.Cli;
+﻿using System.Runtime.CompilerServices;
+
+using WordCount.Cli;
 
 namespace WordCount.VersionOne
 {
     internal class Program
     {
         internal static int Main(string[] arguments) =>
-            CommandLine.Invoke(arguments, (file) =>
+            CommandLine.Invoke(arguments, static (file) =>
             {
                 //var whitespace = new HashSet<byte>
                 //{
                 //        (byte)' ', (byte)'\t', (byte)'\n', (byte)'\r', (byte)'\v', (byte)'\f'
                 //};
 
+                [MethodImpl(MethodImplOptions.AggressiveInlining)]
                 static bool IsWhitespace(byte c)
                 {
                     switch (c)
@@ -39,11 +42,11 @@ namespace WordCount.VersionOne
                     bufferSize: 1 << 20,
                     options: FileOptions.SequentialScan);
                 //using (FileStream fs = File.OpenRead(file.FullName))
-                int b;
-                while ((b = fileStream.ReadByte()) != -1)
+                int @byte;
+                while ((@byte = fileStream.ReadByte()) != -1)
                 {
-                    //bool currentWhitespace = whitespace.Contains((byte)b);
-                    bool currentWhitespace = IsWhitespace((byte)b);
+                    //bool currentWhitespace = whitespace.Contains((byte)byte);
+                    bool currentWhitespace = IsWhitespace((byte)@byte);
                     if (!currentWhitespace && previousWhitespace)
                         total++;
                     previousWhitespace = currentWhitespace;

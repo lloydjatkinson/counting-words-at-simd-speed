@@ -1,6 +1,8 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
+using static System.Runtime.InteropServices.JavaScript.JSType;
+
 namespace WordCount.Cli
 {
     public static class CommandLine
@@ -22,17 +24,24 @@ namespace WordCount.Cli
             return false;
         }
 
+        public static void LogError(string error)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.Error.WriteLine(error);
+            Console.ResetColor();
+        }
+
         public static int Invoke(string[] arguments, Action<FileInfo> run)
         {
             if (!TryParse(arguments, out var file, out var error))
             {
-                Console.Error.WriteLine(error);
+                LogError(error);
                 return 1;
             }
 
             if (!file.Exists)
             {
-                Console.Error.WriteLine($"File not found: {file.FullName}");
+                LogError($"File not found: {file.FullName}");
                 return 1;
             }
 
@@ -41,11 +50,9 @@ namespace WordCount.Cli
                 run(file);
                 return 0;
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.Error.WriteLine(ex.Message);
-                Console.ResetColor();
+                LogError(exception.Message);
                 return 1;
             }
         }
