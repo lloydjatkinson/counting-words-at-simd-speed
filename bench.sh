@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -euo pipefail
 
 # Detect platform and set RID
 case "$(uname -s)" in
@@ -21,10 +22,18 @@ mkdir -p ./bin
 
 # --- build programs ---
 clang -Wall -Wextra -Wpedantic -O3 -funroll-loops -march=native -o ./bin/2_mvp 2_mvp.c
-clang -Wall -Wextra -Wpedantic -O3 -funroll-loops -march=native -o ./bin/3_simd 3_simd.c
-clang -Wall -Wextra -Wpedantic -O3 -funroll-loops -march=native -pthread -o ./bin/4_threads 4_threads.c
+
+# Only build SIMD and threading versions on macOS (ARM)
+if [[ "$RID" == "osx-arm64" ]]; then
+    echo "Building ARM SIMD and threading versions..."
+    clang -Wall -Wextra -Wpedantic -O3 -funroll-loops -march=native -o ./bin/3_simd 3_simd.c
+    clang -Wall -Wextra -Wpedantic -O3 -funroll-loops -march=native -pthread -o ./bin/4_threads 4_threads.c
+else
+    echo "Skipping SIMD and threading versions (ARM-specific)"
+fi
 
 # Publish the .NET version (self-contained, single-file) for current platform
+echo "Publishing .NET application for $RID..."
 pushd ./dotnet/src/WordCount.VersionOne >/dev/null
 dotnet publish -c Release -r "$RID" --self-contained true \
   -p:PublishSingleFile=true -p:DebugType=None -p:StripSymbols=true >/dev/null
@@ -49,17 +58,31 @@ EXPECTED=65076996
 
 # C versions
 ./bin/2_mvp bench.txt | grep -q "$EXPECTED" || { echo "2_mvp failed"; exit 1; }
-./bin/3_simd bench.txt | grep -q "$EXPECTED" || { echo "3_simd failed"; exit 1; }
-./bin/4_threads bench.txt | grep -q "$EXPECTED" || { echo "4_threads failed"; exit 1; }
+
+# ARM-specific versions (only on macOS)
+if [[ "$RID" == "osx-arm64" ]]; then
+    ./bin/3_simd bench.txt | grep -q "$EXPECTED" || { echo "3_simd failed"; exit 1; }
+    ./bin/4_threads bench.txt | grep -q "$EXPECTED" || { echo "4_threads failed"; exit 1; }
+fi
 
 # .NET
 "$DOTNET_APP" --file bench.txt | grep -q "$EXPECTED" || { echo "dotnet failed"; exit 1; }
 
 # --- run benchmark ---
-hyperfine --warmup 2 --min-runs 3 \
-    'python3 0_mvp.py bench.txt' \
-    'python3 1_c_regex.py bench.txt' \
-    './bin/2_mvp bench.txt' \
-    './bin/3_simd bench.txt' \
-    './bin/4_threads bench.txt' \
-    "$DOTNET_APP --file bench.txt"
+if [[ "$RID" == "osx-arm64" ]]; then
+    # macOS with ARM SIMD versions
+    hyperfine --warmup 2 --min-runs 3 \
+        'python3 0_mvp.py bench.txt' \
+        'python3 1_c_regex.py bench.txt' \
+        './bin/2_mvp bench.txt' \
+        './bin/3_simd bench.txt' \
+        './bin/4_threads bench.txt' \
+        "$DOTNET_APP --file bench.txt"
+else
+    # Linux/Windows without ARM SIMD versions
+    hyperfine --warmup 2 --min-runs 3 \
+        'python3 0_mvp.py bench.txt' \
+        'python3 1_c_regex.py bench.txt' \
+        './bin/2_mvp bench.txt' \
+        "$DOTNET_APP --file bench.txt"
+fi
