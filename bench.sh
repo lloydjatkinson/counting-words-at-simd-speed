@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-set -euo pipefail
 
 # Detect platform and set RID
 case "$(uname -s)" in
