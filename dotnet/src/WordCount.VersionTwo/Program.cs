@@ -1,8 +1,6 @@
-﻿using System.Runtime.CompilerServices;
+﻿using WordCount.Cli;
 
-using WordCount.Cli;
-
-namespace WordCount.VersionOne
+namespace WordCount.VersionTwo
 {
     internal class Program
     {
@@ -33,7 +31,7 @@ namespace WordCount.VersionOne
                     FileMode.Open,
                     FileAccess.Read,
                     FileShare.Read,
-                    bufferSize: 1 << 20,
+                    bufferSize: 4096,
                     options: FileOptions.SequentialScan);
                 //using (FileStream fs = File.OpenRead(file.FullName))
                 int @byte;
@@ -42,7 +40,9 @@ namespace WordCount.VersionOne
                     //bool currentWhitespace = whitespace.Contains((byte)byte);
                     bool currentWhitespace = IsWhitespace((byte)@byte);
                     if (!currentWhitespace && previousWhitespace)
+                    {
                         total++;
+                    }
                     previousWhitespace = currentWhitespace;
                 }
 

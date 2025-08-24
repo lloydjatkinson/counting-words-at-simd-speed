@@ -13,7 +13,9 @@ namespace WordCount.Benchmarks.Micro
     [MemoryDiagnoser]
     [HardwareCounters(
         HardwareCounter.BranchMispredictions,
-        HardwareCounter.BranchInstructions)]
+        HardwareCounter.BranchInstructions,
+        HardwareCounter.CacheMisses,
+        HardwareCounter.TotalCycles)]
     public class HashSetComparedToSwitch
     {
         private readonly HashSet<byte> whitespace = new HashSet<byte>
