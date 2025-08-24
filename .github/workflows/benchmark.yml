@@ -40,7 +40,7 @@ jobs:
     - name: Install dependencies (Windows)
       if: matrix.os == 'windows-2025'
       run: |
-        winget install hyperfine
+        winget install hyperfine --accept-source-agreements --accept-package-agreements
     
     - name: Set up environment
       run: |
