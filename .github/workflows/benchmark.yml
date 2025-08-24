@@ -32,13 +32,13 @@ jobs:
     
     - name: Make script executable (Unix)
       if: matrix.os != 'windows-latest'
-      run: chmod +x ./scripts/bench.sh
+      run: chmod +x ./bench.sh
     
     - name: Run benchmark script (Unix)
       if: matrix.os != 'windows-latest'
-      run: ./scripts/bench.sh
+      run: ./bench.sh
     
     - name: Run benchmark script (Windows)
       if: matrix.os == 'windows-latest'
-      run: bash ./scripts/bench.sh
+      run: bash ./bench.sh
       shell: bash
