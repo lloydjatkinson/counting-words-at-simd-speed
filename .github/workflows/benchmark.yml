@@ -13,11 +13,11 @@ jobs:
     
     strategy:
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-2025, macos-latest]
         include:
           - os: ubuntu-latest
             platform: debian
-          - os: windows-latest
+          - os: windows-2025
             platform: windows
           - os: macos-latest
             platform: mac-arm
@@ -38,7 +38,7 @@ jobs:
         brew install hyperfine
     
     - name: Install dependencies (Windows)
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2025'
       run: |
         winget install hyperfine
     
@@ -48,14 +48,14 @@ jobs:
         echo "OS: ${{ matrix.os }}"
     
     - name: Make script executable (Unix)
-      if: matrix.os != 'windows-latest'
+      if: matrix.os != 'windows-2025'
       run: chmod +x ./bench.sh
     
     - name: Run benchmark script (Unix)
-      if: matrix.os != 'windows-latest'
+      if: matrix.os != 'windows-2025'
       run: ./bench.sh
     
     - name: Run benchmark script (Windows)
-      if: matrix.os == 'windows-latest'
+      if: matrix.os == 'windows-2025'
       run: bash ./bench.sh
       shell: bash
